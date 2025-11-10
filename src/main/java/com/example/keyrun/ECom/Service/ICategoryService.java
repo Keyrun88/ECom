@@ -8,7 +8,6 @@ public interface ICategoryService
      List<Category> getAllCategories();
      Category addCategory(Category category);
      String deleteCategory(Long categoryId);
-
-    String updateCategory(Category category,Long categoryId);
+     String updateCategory(Category category,Long categoryId);
 }
 
