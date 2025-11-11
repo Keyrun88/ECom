@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl  implements ICategoryService
@@ -23,21 +22,14 @@ public class CategoryServiceImpl  implements ICategoryService
     @Override
     public Category addCategory(Category category)
     {
-        //categoryRepo.save(category);
-        //return category;
         return categoryRepo.save(category);
     }
 
     @Override
     public String deleteCategory(Long categoryId)
     {
-
-        Category category = categoryRepo.findAll()
-                            .stream()
-                            .filter(c -> c.getCategoryID() == categoryId)
-                            .findFirst()
+        Category category = categoryRepo.findById(Math.toIntExact(categoryId))
                             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
-
         categoryRepo.delete(category);
         return  "Deleted Successfully";
     }
@@ -45,21 +37,11 @@ public class CategoryServiceImpl  implements ICategoryService
     @Override
     public String updateCategory(Category category,Long categoryId)
     {
-        Optional<Category> categoryOptional = categoryRepo.findAll().stream()
-                .filter(c -> c.getCategoryID() == categoryId)
-                .findFirst();
+            Category updateCategory = categoryRepo.findById(Math.toIntExact(categoryId))
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
 
-        if(categoryOptional.isPresent())
-        {
-            Category categoryToUpdate = categoryOptional.get();
-            categoryToUpdate.setCategoryName(category.getCategoryName());
-            categoryRepo.save(categoryToUpdate);
+            updateCategory.setCategoryName(category.getCategoryName());
+            categoryRepo.save(updateCategory);
             return  "Updated Successfully";
-        }
-        else
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
     }
-
 }
