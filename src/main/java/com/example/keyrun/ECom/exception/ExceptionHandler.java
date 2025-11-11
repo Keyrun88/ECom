@@ -24,6 +24,7 @@ public class ExceptionHandler
                     response.put(((FieldError)error).getField(), error.getDefaultMessage());
                 });
          return  new ResponseEntity<Map<String,String>>(response, HttpStatus.BAD_REQUEST);
+
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(ApiException.class)
